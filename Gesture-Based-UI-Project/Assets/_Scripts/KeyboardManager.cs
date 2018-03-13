@@ -2,7 +2,8 @@
  * Asset original author: Yunhan Li 
  * Any issue please contact yunhn.lee@gmail.com
  * 
- * Adapted for use in the gesture based UI project by Mindaugas Vainauskas
+ * Adapted for use in the gesture based UI project by Mindaugas Vainauskas and Keith Williams 
+ * GMIT 2018
  ***/
 
 using UnityEngine;
