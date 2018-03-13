@@ -32,6 +32,21 @@ public class KinectManager : MonoBehaviour {
 
 		if (sensor != null) {
 			Debug.Log("Kinect sensor available");
-		}
+
+            //Opening Kinect sensor at the start of the game to be able to use it.
+            if (!sensor.IsOpen)
+            {
+                sensor.Open();
+            }
+        }       
 	}
+
+    //adding code to close Kinect sensor when exiting app
+    public void OnApplicationQuit() {
+
+        if (sensor.IsOpen)
+        {
+            sensor.Close();
+        }
+    }
 }
