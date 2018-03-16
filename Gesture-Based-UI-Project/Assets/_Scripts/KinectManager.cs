@@ -61,18 +61,24 @@ public class KinectManager : MonoBehaviour {
 
 				foreach (var body in bodies) {
 					/*
-					 * If the player is being tracked, calculate the postion of the right hand.
+					 * If the player is being tracked calculate the position and orientation.
 					 */
 					if (body.IsTracked) {
-						var pos = body.Joints[JointType.HandRight].Position;
-						Vector3 position = new Vector3(pos.X, pos.Y, pos.Z);
-
 						#if UNITY_EDITOR
 						Debug.Log("Tracking " + body.TrackingId + " --- " +
 									"Right hand state: " + body.HandRightState + " --- " +
 									"Right hand confidence: " + body.HandRightConfidence);
+						#endif
 
+						var pos = body.Joints[JointType.HandRight].Position;
+						Vector3 position = new Vector3(pos.X, pos.Y, pos.Z);
+
+						var ori = body.JointOrientations[JointType.HandRight].Orientation;
+						Quaternion orientation = new Quaternion(ori.X, ori.Y, ori.Z, ori.W);
+
+						#if UNITY_EDITOR
 						Debug.Log("Position: " + position);
+						Debug.Log("Orientation: " + orientation);
 						#endif
 					}
 				}
