@@ -60,20 +60,44 @@ public class KinectManager : MonoBehaviour {
 				frame.GetAndRefreshBodyData(bodies);
 
 				foreach (var body in bodies) {
+					/*
+					 * If the player is being tracked, calculate the postion of the right hand.
+					 */
 					if (body.IsTracked) {
-						// Tracked player...
+						var pos = body.Joints[JointType.HandRight].Position;
+						Vector3 position = new Vector3(pos.X, pos.Y, pos.Z);
+
+						#if UNITY_EDITOR
+						Debug.Log("Tracking " + body.TrackingId + " --- " +
+									"Right hand state: " + body.HandRightState + " --- " +
+									"Right hand confidence: " + body.HandRightConfidence);
+
+						Debug.Log("Position: " + position);
+						#endif
 					}
 				}
+
+				frame.Dispose();
+				frame = null;
 			}
 		}
 	}
 
     //adding code to close Kinect sensor when exiting app
     public void OnApplicationQuit() {
+		if (bodyFrameReader != null) {
+			bodyFrameReader.IsPaused = true;
+			bodyFrameReader.Dispose();
+			bodyFrameReader = null;
+		}
 
-        if (sensor.IsOpen)
-        {
-            sensor.Close();
-        }
+		if (sensor != null) {
+			if (sensor.IsOpen)
+			{
+				sensor.Close();
+			}
+
+			sensor = null;
+		}
     }
 }
