@@ -8,11 +8,11 @@ using UnityEngine;
  * be attached to the gameobject.
  */
  [RequireComponent(typeof(Rigidbody))]
-public class DebugController : MonoBehaviour {
+public class BallController : MonoBehaviour {
 
 	// This is the force to apply to the ball. This force is dampened by the rigidbodys drag property.
-	private const float sideForce = 500f;
-	private const float upForce = 50f;
+	private const float sideForce = 300f;
+	private const float upForce = 100f;
 
 	// The rigidbody component attached to this gameobject.
 	private Rigidbody rigidbody;
@@ -21,7 +21,7 @@ public class DebugController : MonoBehaviour {
 	 * This value represents the direction in which the ball will move when the force is applied to it. The value can
 	 * either be 1 (forward) or -1 (backward).
 	 */
-	private short direction = 1;
+	private short direction = -1;
 
 	// Use this for initialization
 	private void Start () {
@@ -42,15 +42,14 @@ public class DebugController : MonoBehaviour {
 	private void Update () {
 		#if UNITY_EDITOR
 		if (Input.GetKeyDown(KeyCode.Space)) {
+			Debug.Log("DEBUG: Simulated force on ball.");
 			SimulateForce();
 		}
 		#endif
 	}
 
 	// Simulate hitting the ball by applying directional force.
-	private void SimulateForce() {
-		Debug.Log("DEBUG: Simulated force on ball.");
-
+	public void SimulateForce() {
 		// Set the velocity of the ball to 0 before applying force.
 		rigidbody.velocity = Vector3.zero;
 

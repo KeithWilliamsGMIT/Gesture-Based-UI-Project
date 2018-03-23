@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using Windows.Kinect;
 using UnityEngine;
 
 /*
@@ -8,6 +9,7 @@ using UnityEngine;
 public class PlayerTracking : MonoBehaviour {
 	private Vector3 position;
 	private Quaternion orientation;
+	private HandState state;
 
 	/*
 	 * This is the default constructor.
@@ -15,15 +17,17 @@ public class PlayerTracking : MonoBehaviour {
 	public PlayerTracking() {
 		this.position = new Vector3();
 		this.orientation = new Quaternion();
+		this.state = HandState.Unknown;
 	}
 
 
 	/*
-	 * This constructor creates a new instance of this class by specifying the position and orientation.
+	 * This constructor creates a new instance of this class by specifying the position, orientation and hand state.
 	 */
-	public PlayerTracking(Vector3 position, Quaternion orientation) {
+	public PlayerTracking(Vector3 position, Quaternion orientation, HandState state) {
 		this.position = position;
 		this.orientation = orientation;
+		this.state = state;
 	}
 
 	/*
@@ -38,5 +42,12 @@ public class PlayerTracking : MonoBehaviour {
 	 */
 	public Quaternion getOrientation() {
 		return orientation;
+	}
+
+	/*
+	 * This method returns the stored state.
+	 */
+	public HandState getState() {
+		return state;
 	}
 }

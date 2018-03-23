@@ -102,7 +102,7 @@ public class KinectManager : MonoBehaviour {
 						Debug.Log("Orientation: " + orientation);
 						#endif
 
-						PlayerTracking player = new PlayerTracking(position, orientation);
+						PlayerTracking player = new PlayerTracking(position, orientation, body.HandRightState);
 						players.Add(player);
 					}
 				}

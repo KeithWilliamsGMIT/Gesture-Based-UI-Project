@@ -10,8 +10,12 @@ public class PaddleController : MonoBehaviour {
 
 	[SerializeField]
     private PlayerEnum player;
+
+	private float smoothTime = 0.3f;
 	
 	private Vector3 initialPostition;
+
+	private Vector3 velocity = Vector3.zero;
 
 	/*
 	 * Store the initial position of the paddle.
@@ -35,6 +39,6 @@ public class PaddleController : MonoBehaviour {
 		}
 
 		pos = pos * MULTIPLIER;
-		this.transform.position = initialPostition + new Vector3(pos.x, pos.y);
+		this.transform.position =  Vector3.SmoothDamp(transform.position, initialPostition + new Vector3(pos.x, pos.y), ref velocity, smoothTime);
 	}
 }
