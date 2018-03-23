@@ -7,6 +7,9 @@ using UnityEngine;
  */
 public class PaddleController : MonoBehaviour {
 	private const byte MULTIPLIER = 10;
+
+	[SerializeField]
+    private PlayerEnum player;
 	
 	private Vector3 initialPostition;
 
@@ -21,7 +24,7 @@ public class PaddleController : MonoBehaviour {
 	 * Update the position of the paddle at each frame using data from the kinect.
 	 */
 	public void Update () {
-		Vector2 pos = KinectManager.getInstance().getPlayerOne().getPosition() * MULTIPLIER;
+		Vector2 pos = KinectManager.getInstance().getPlayer(player).getPosition() * MULTIPLIER;
 		this.transform.position = initialPostition + new Vector3(pos.x, pos.y);
 	}
 }

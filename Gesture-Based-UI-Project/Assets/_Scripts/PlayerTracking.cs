@@ -10,7 +10,16 @@ public class PlayerTracking : MonoBehaviour {
 	private Quaternion orientation;
 
 	/*
-	 * Create a new instance of this class by specifying the position and orientation.
+	 * This is the default constructor.
+	 */
+	public PlayerTracking() {
+		this.position = new Vector3();
+		this.orientation = new Quaternion();
+	}
+
+
+	/*
+	 * This constructor creates a new instance of this class by specifying the position and orientation.
 	 */
 	public PlayerTracking(Vector3 position, Quaternion orientation) {
 		this.position = position;

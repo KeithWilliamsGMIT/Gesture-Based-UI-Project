@@ -14,7 +14,7 @@ public class KinectManager : MonoBehaviour {
 	private static KinectManager instance = null;
 	private Body[] bodies = null;
 	private BodyFrameReader bodyFrameReader;
-	private PlayerTracking p1;
+	private IList<PlayerTracking> players = new List<PlayerTracking>();
 
 	/*
 	 * This method returns the instance of this object.
@@ -24,10 +24,14 @@ public class KinectManager : MonoBehaviour {
 	}
 
 	/*
-	 * This method returns the positional data for player one.
+	 * This method returns the positional data for the given player. If there is no data for the given player
+	 * a default PlayerTracking object is returned.
 	 */
-	public PlayerTracking getPlayerOne() {
-		return p1;
+	public PlayerTracking getPlayer(PlayerEnum player) {
+		if ((int) player >= players.Count)
+			return new PlayerTracking();
+
+		return players[(int) player];
 	}
 
 	/*
@@ -74,6 +78,8 @@ public class KinectManager : MonoBehaviour {
 			{
 				frame.GetAndRefreshBodyData(bodies);
 
+				players.Clear();
+
 				foreach (var body in bodies) {
 					/*
 					 * If the player is being tracked calculate the position and orientation.
@@ -96,7 +102,8 @@ public class KinectManager : MonoBehaviour {
 						Debug.Log("Orientation: " + orientation);
 						#endif
 
-						p1 = new PlayerTracking(position, orientation);
+						PlayerTracking player = new PlayerTracking(position, orientation);
+						players.Add(player);
 					}
 				}
 
