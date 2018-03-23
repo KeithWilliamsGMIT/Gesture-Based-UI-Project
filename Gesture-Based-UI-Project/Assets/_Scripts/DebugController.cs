@@ -4,8 +4,10 @@ using UnityEngine;
 
 /*
  * This class can be used to simulate two players hitting the ball back and over using the keyboard rather than the
- * Kinect. These controls are only available in Unity Editor for debug purposes.
+ * Kinect. These controls are only available in Unity Editor for debug purposes. This script requires a rigidbody to
+ * be attached to the gameobject.
  */
+ [RequireComponent(typeof(Rigidbody))]
 public class DebugController : MonoBehaviour {
 
 	// This is the force to apply to the ball. This force is dampened by the rigidbodys drag property.
@@ -17,7 +19,7 @@ public class DebugController : MonoBehaviour {
 
 	/*
 	 * This value represents the direction in which the ball will move when the force is applied to it. The value can
-	 * either be 1 (right) or -1 (left).
+	 * either be 1 (forward) or -1 (backward).
 	 */
 	private short direction = 1;
 
@@ -52,8 +54,8 @@ public class DebugController : MonoBehaviour {
 		// Set the velocity of the ball to 0 before applying force.
 		rigidbody.velocity = Vector3.zero;
 
-		// Apply a directional (left/right and up) force to the ball. The up force is applied to counteract gravity.
-		rigidbody.AddForce((Vector2.right * sideForce * direction) + (Vector2.up * upForce));
+		// Apply a directional (forward/backward and up) force to the ball. The up force is applied to counteract gravity.
+		rigidbody.AddForce((Vector3.forward * sideForce * direction) + (Vector3.up * upForce));
 
 		// Invert the direction for next time.
 		direction *= -1;

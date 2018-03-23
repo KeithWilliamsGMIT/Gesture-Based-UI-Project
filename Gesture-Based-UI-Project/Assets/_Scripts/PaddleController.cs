@@ -24,7 +24,17 @@ public class PaddleController : MonoBehaviour {
 	 * Update the position of the paddle at each frame using data from the kinect.
 	 */
 	public void Update () {
-		Vector2 pos = KinectManager.getInstance().getPlayer(player).getPosition() * MULTIPLIER;
+		Vector2 pos = KinectManager.getInstance().getPlayer(player).getPosition();
+
+		// Split the screen and flip the x-axis for player one.
+		if (player == PlayerEnum.PLAYER_ONE) {
+			pos.x = pos.x + 0.5f;
+			pos.x = pos.x * -1;
+		} else {
+			pos.x = pos.x - 0.5f;
+		}
+
+		pos = pos * MULTIPLIER;
 		this.transform.position = initialPostition + new Vector3(pos.x, pos.y);
 	}
 }
