@@ -39,6 +39,6 @@ public class PaddleController : MonoBehaviour {
 		}
 
 		pos = pos * MULTIPLIER;
-		this.transform.position =  Vector3.SmoothDamp(transform.position, initialPostition + new Vector3(pos.x, pos.y), ref velocity, smoothTime);
+		this.transform.position = Vector3.SmoothDamp(transform.position, initialPostition + new Vector3(pos.x, pos.y), ref velocity, smoothTime);
 	}
 }
