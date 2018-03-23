@@ -14,6 +14,21 @@ public class KinectManager : MonoBehaviour {
 	private static KinectManager instance = null;
 	private Body[] bodies = null;
 	private BodyFrameReader bodyFrameReader;
+	private PlayerTracking p1;
+
+	/*
+	 * This method returns the instance of this object.
+	 */
+	public static KinectManager getInstance() {
+		return instance;
+	}
+
+	/*
+	 * This method returns the positional data for player one.
+	 */
+	public PlayerTracking getPlayerOne() {
+		return p1;
+	}
 
 	/*
 	 * Create a new instance of this class if none already exist.
@@ -80,6 +95,8 @@ public class KinectManager : MonoBehaviour {
 						Debug.Log("Position: " + position);
 						Debug.Log("Orientation: " + orientation);
 						#endif
+
+						p1 = new PlayerTracking(position, orientation);
 					}
 				}
 
