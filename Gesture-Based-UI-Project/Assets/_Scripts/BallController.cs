@@ -60,7 +60,7 @@ public class BallController : MonoBehaviour {
 	 */
 	public void OnCollisionEnter(Collision collision)
 	{
-		if (collision.gameObject.name.Contains("Racket"))
+		if (collision.gameObject.name.Equals("Racket"))
 		{
 			SimulateForce();
 		}
