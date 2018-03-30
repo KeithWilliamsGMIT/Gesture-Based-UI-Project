@@ -11,8 +11,10 @@ using UnityEngine;
 public class BallController : MonoBehaviour {
 
 	// This is the force to apply to the ball. This force is dampened by the rigidbodys drag property.
-	private const float sideForce = 300f;
-	private const float upForce = 100f;
+	[SerializeField]
+	private float sideForce = 400f;
+	[SerializeField]
+	private float upForce = 150f;
 
 	// The rigidbody component attached to this gameobject.
 	private Rigidbody rigidbody;
@@ -22,6 +24,11 @@ public class BallController : MonoBehaviour {
 	 * either be 1 (forward) or -1 (backward).
 	 */
 	private short direction = -1;
+
+	// Set the direction of the ball for the next time force is applied to it, for example, when serving.
+	public void SetDirection(short direction) {
+		this.direction = direction;
+	}
 
 	// Use this for initialization
 	private void Start () {
@@ -48,15 +55,32 @@ public class BallController : MonoBehaviour {
 		#endif
 	}
 
+	/*
+	 * Detect collisions with rackets and simulate force.
+	 */
+	public void OnCollisionEnter(Collision collision)
+	{
+		if (collision.gameObject.name.Contains("Racket"))
+		{
+			SimulateForce();
+		}
+	}
+
 	// Simulate hitting the ball by applying directional force.
 	public void SimulateForce() {
 		// Set the velocity of the ball to 0 before applying force.
-		rigidbody.velocity = Vector3.zero;
+		StopBall();
 
 		// Apply a directional (forward/backward and up) force to the ball. The up force is applied to counteract gravity.
 		rigidbody.AddForce((Vector3.forward * sideForce * direction) + (Vector3.up * upForce));
 
 		// Invert the direction for next time.
 		direction *= -1;
+	}
+
+	// Stop the ball by setting the velocity and angular velocity to zero.
+	public void StopBall() {
+		rigidbody.velocity = Vector3.zero;
+		rigidbody.angularVelocity = Vector3.zero;
 	}
 }
