@@ -16,7 +16,7 @@ public class PaddleMirrorController : MonoBehaviour {
 	/*
 	 * Set the opacity and rotation for this gameobject.
 	 */
-	public void Start () {
+	public void Awake () {
 		Component[] renderers = gameObject.GetComponentsInChildren(typeof(Renderer));
 
 		foreach (Renderer curRenderer in renderers)
@@ -35,9 +35,10 @@ public class PaddleMirrorController : MonoBehaviour {
 	}
 	
 	/*
-	 * Update the position of this gameoject to match the original gameobject.
+	 * Update the position of this gameoject to match the original gameobject. The LateUpdate() method is called
+	 * after the Update() method which makes it suitable for the purpose of following an object.
 	 */
-	public void Update () {
+	public void LateUpdate () {
 		transform.position = Vector3.MoveTowards(transform.position, originalPaddle.position, 1000);
 	}
 }

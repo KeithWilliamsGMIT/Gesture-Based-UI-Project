@@ -7,7 +7,9 @@ using UnityEngine;
  * Kinect. These controls are only available in Unity Editor for debug purposes. This script requires a rigidbody to
  * be attached to the gameobject.
  */
- [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(AudioSource))]
+
 public class BallController : MonoBehaviour {
 
 	// This is the force to apply to the ball. This force is dampened by the rigidbodys drag property.
@@ -18,6 +20,17 @@ public class BallController : MonoBehaviour {
 
 	// The rigidbody component attached to this gameobject.
 	private Rigidbody rigidbody;
+
+	// The audiosource component attached to this gameobject.
+	private AudioSource audioSource;
+
+	// A collection of audio clips that can be played when the ball collides with the racket.
+	[SerializeField]
+	private AudioClip[] racketCollisionClips;
+
+	// A collection of audio clips that can be played when the ball collides with the table.
+	[SerializeField]
+	private AudioClip[] tableCollisionClips;
 
 	/*
 	 * This value represents the direction in which the ball will move when the force is applied to it. The value can
@@ -34,15 +47,13 @@ public class BallController : MonoBehaviour {
 	private void Start () {
 		#if UNITY_EDITOR
 		Debug.Log("DEBUG: Press SPACE to simulate hitting the ball.");
+		#endif
 
 		// Get the rigidbody component attached to this gameobject.
 		rigidbody = gameObject.GetComponent<Rigidbody>();
 
-		// Output an error if there is no rigidbody attached to the gameobject.
-		if (rigidbody == null) {
-			Debug.LogError("DEBUG: No rigidbody attached to gameobject.");
-		}
-		#endif
+		// Get the audio source component attached to this gameobject.
+		audioSource = gameObject.GetComponent<AudioSource>();
 	}
 	
 	// Update is called once per frame
@@ -51,6 +62,7 @@ public class BallController : MonoBehaviour {
 		if (Input.GetKeyDown(KeyCode.Space)) {
 			Debug.Log("DEBUG: Simulated force on ball.");
 			SimulateForce();
+			PlayRandomClip(racketCollisionClips);
 		}
 		#endif
 	}
@@ -60,9 +72,13 @@ public class BallController : MonoBehaviour {
 	 */
 	public void OnCollisionEnter(Collision collision)
 	{
-		if (collision.gameObject.name.Equals("Racket"))
+		if (collision.gameObject.tag.Equals("racket"))
 		{
 			SimulateForce();
+
+			PlayRandomClip(racketCollisionClips);
+		} else if (collision.gameObject.tag.Equals("table")) {
+			PlayRandomClip(tableCollisionClips);
 		}
 	}
 
@@ -71,8 +87,11 @@ public class BallController : MonoBehaviour {
 		// Set the velocity of the ball to 0 before applying force.
 		StopBall();
 
+		// Set a random roatation on the ball.
+		transform.LookAt(new Vector3(Random.Range(-2.5f, 2.5f) , 1, 4.5f * direction));
+
 		// Apply a directional (forward/backward and up) force to the ball. The up force is applied to counteract gravity.
-		rigidbody.AddForce((Vector3.forward * sideForce * direction) + (Vector3.up * upForce));
+		rigidbody.AddForce((transform.forward * sideForce) + (Vector3.up * upForce));
 
 		// Invert the direction for next time.
 		direction *= -1;
@@ -82,5 +101,11 @@ public class BallController : MonoBehaviour {
 	public void StopBall() {
 		rigidbody.velocity = Vector3.zero;
 		rigidbody.angularVelocity = Vector3.zero;
+	}
+
+	// Play a random sound out of a collection audio clips.
+	private void PlayRandomClip(AudioClip[] clips) {
+		audioSource.clip = clips[Random.Range(0, clips.Length -1)];
+		audioSource.Play();
 	}
 }

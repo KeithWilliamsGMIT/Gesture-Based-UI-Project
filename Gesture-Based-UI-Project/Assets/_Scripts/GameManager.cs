@@ -20,6 +20,12 @@ public class GameManager : MonoBehaviour {
 	private void Start() {
 		servingPlayer = PlayerEnum.PLAYER_ONE;
 		ballInitialPosition = ball.transform.position;
+		ball.GetComponent<Rigidbody>().useGravity = false;
+		ball.enabled = false;
+		
+		#if UNITY_EDITOR
+		Debug.Log("DEBUG: Press SPACE to serve the ball.");
+		#endif
 	}
 	
 	/*
@@ -27,12 +33,28 @@ public class GameManager : MonoBehaviour {
 	 * falls below 0 on the y axis reset it's position.
 	 */
 	private void Update () {
+		#if UNITY_EDITOR
+		if (!isStarted && Input.GetKeyDown(KeyCode.Space)) {
+			Debug.Log("DEBUG: Served using SPACE.");
+			Serve();
+		}
+		#endif
+
 		if (!isStarted && KinectManager.getInstance().getPlayer(servingPlayer).getState() == HandState.Lasso) {
-			isStarted = true;
-			ball.SimulateForce();
+			Serve();
 		} else if (ball.transform.position.y < 0) {
 			Reset();
 		}
+	}
+
+	/*
+	 * Serve the ball. by simulating a force on the ball.
+	 */
+	private void Serve() {
+		isStarted = true;
+		ball.enabled = true;
+		ball.GetComponent<Rigidbody>().useGravity = true;
+		ball.SimulateForce();
 	}
 
 	/*
@@ -40,17 +62,19 @@ public class GameManager : MonoBehaviour {
 	 */
 	private void Reset() {
 		isStarted = false;
-		BallController ballController = ball.GetComponent<BallController>();
-		ballController.StopBall();
+		ball.GetComponent<Rigidbody>().useGravity = false;
+		ball.StopBall();
 
 		if (ball.transform.position.z > 0) {
 			servingPlayer = PlayerEnum.PLAYER_TWO;
-			ballController.SetDirection(1);
+			ball.SetDirection(1);
 			ball.transform.position = new Vector3(ballInitialPosition.x, ballInitialPosition.y, ballInitialPosition.z * -1);
 		} else {
-			ballController.SetDirection(-1);
+			ball.SetDirection(-1);
 			servingPlayer = PlayerEnum.PLAYER_ONE;
 			ball.transform.position = ballInitialPosition;
 		}
+
+		ball.enabled = false;
 	}
 }
