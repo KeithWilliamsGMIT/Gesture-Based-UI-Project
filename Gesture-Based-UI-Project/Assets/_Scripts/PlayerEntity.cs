@@ -12,12 +12,22 @@ namespace Assets._Scripts
 
         public void setPlayerName(string pName)
         {
-            this.playerName = pName;
+            playerName = pName;
         }
 
         public string getPlayerName()
         {
-            return this.playerName;
+            return playerName;
+        }
+
+        public void setPlayerScore(int s)
+        {
+            playerScore = s;
+        }
+
+        public int getPlayerScore()
+        {
+            return playerScore;
         }
     }
 

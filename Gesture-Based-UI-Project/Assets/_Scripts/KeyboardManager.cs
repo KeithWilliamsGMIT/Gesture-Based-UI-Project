@@ -87,14 +87,16 @@ namespace VRKeyboard.Utils {
         //Submitting the inputed player name
         public void Submit()
         {
-            for (int i = 0; i < 2; i++)
-            {
+           
                 PlayerEntity player = new PlayerEntity();
                 player.setPlayerName(Input);
+                player.setPlayerScore(0);
                 playerList.Add(player);
                 Input = "";
                 Debug.Log(player.getPlayerName());
-            }
+           
+
+            playerList.TrimExcess();
 
             if (playerList.Count == 2)
             {
