@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour {
 	private Vector3 ballInitialPosition;
 	private PlayerEnum servingPlayer;
 	private bool isStarted = false;
+	[SerializeField]
+	private bool isSinglePlayer;
 
 	/*
 	 * Get the initial position of the ball so we can reset its position later.
@@ -65,7 +67,7 @@ public class GameManager : MonoBehaviour {
 		ball.GetComponent<Rigidbody>().useGravity = false;
 		ball.StopBall();
 
-		if (ball.transform.position.z > 0) {
+		if (!isSinglePlayer && ball.transform.position.z > 0) {
 			servingPlayer = PlayerEnum.PLAYER_TWO;
 			ball.SetDirection(1);
 			ball.transform.position = new Vector3(ballInitialPosition.x, ballInitialPosition.y, ballInitialPosition.z * -1);

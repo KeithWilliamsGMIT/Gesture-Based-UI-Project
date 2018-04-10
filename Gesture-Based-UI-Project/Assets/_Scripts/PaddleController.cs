@@ -6,7 +6,7 @@ using UnityEngine;
  * This class is responsible for tracking a paddle using the data from the KinectManager.
  */
 public class PaddleController : MonoBehaviour {
-	private const byte MULTIPLIER = 10;
+	private const byte MULTIPLIER = 20;
 
 	[SerializeField]
     private PlayerEnum player;
@@ -16,6 +16,9 @@ public class PaddleController : MonoBehaviour {
 	private Vector3 initialPostition;
 
 	private Vector3 velocity = Vector3.zero;
+
+	[SerializeField]
+	private bool isSinglePlayer;
 
 	/*
 	 * Store the initial position of the paddle.
@@ -31,14 +34,20 @@ public class PaddleController : MonoBehaviour {
 		Vector2 pos = KinectManager.getInstance().getPlayer(player).getPosition();
 
 		// Split the screen and flip the x-axis for player one.
-		if (player == PlayerEnum.PLAYER_ONE) {
-			pos.x = pos.x + 0.5f;
+		if (isSinglePlayer) {
 			pos.x = pos.x * -1;
+			pos *= MULTIPLIER;
 		} else {
-			pos.x = pos.x - 0.5f;
+			if (player == PlayerEnum.PLAYER_ONE) {
+				pos.x = pos.x + 0.5f;
+				pos.x = pos.x * -1;
+			} else {
+				pos.x = pos.x - 0.5f;
+			}
+
+			pos *= (MULTIPLIER / 2);
 		}
 
-		pos = pos * MULTIPLIER;
 		this.transform.position = Vector3.SmoothDamp(transform.position, initialPostition + new Vector3(pos.x, pos.y), ref velocity, smoothTime);
 	}
 }
