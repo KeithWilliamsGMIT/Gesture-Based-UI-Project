@@ -84,22 +84,26 @@ namespace VRKeyboard.Utils {
             capslockFlag = !capslockFlag;
         }
 
+        int counter = 0;
         //Submitting the inputed player name
         public void Submit()
-        {
-           
-                PlayerEntity player = new PlayerEntity();
-                player.setPlayerName(Input);
-                player.setPlayerScore(0);
-                playerList.Add(player);
-                Input = "";
-                Debug.Log(player.getPlayerName());
-           
+        {           
+            PlayerEntity player = new PlayerEntity();
+            player.setPlayerName(Input);
+            player.setPlayerScore(0);
+            playerList.Add(player);
+            Input = "";
+            counter++;
 
-            playerList.TrimExcess();
-
+            //attempt at getting player names and scores to carry through to next scene.
+            PlayerPrefs.SetString("Player" + counter + "Name", Input);
+            PlayerPrefs.SetInt("Player" + counter + "Score", 0);
+            
             if (playerList.Count == 2)
             {
+                Debug.Log(PlayerPrefs.GetString("Player0Name").ToString());
+                Debug.Log(PlayerPrefs.GetString("Player1Name").ToString());
+                counter = 0;
                 SceneManager.LoadScene("DemoScene");
             }
         }

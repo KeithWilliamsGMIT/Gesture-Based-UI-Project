@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using Windows.Kinect;
 using UnityEngine;
+using UnityEngine.UI;
 
 /*
  * This class is responsible for managing a game. For example, serving the ball at the start.
  */
 public class GameManager : MonoBehaviour {
-
-	[SerializeField]
+    
+    [SerializeField]
 	private BallController ball;
 	private Vector3 ballInitialPosition;
 	private PlayerEnum servingPlayer;
@@ -22,9 +23,12 @@ public class GameManager : MonoBehaviour {
 		ballInitialPosition = ball.transform.position;
 		ball.GetComponent<Rigidbody>().useGravity = false;
 		ball.enabled = false;
-		
-		#if UNITY_EDITOR
-		Debug.Log("DEBUG: Press SPACE to serve the ball.");
+
+        Debug.Log(PlayerPrefs.GetString("Player0Name"));
+        Debug.Log(PlayerPrefs.GetString("Player1Name"));
+
+#if UNITY_EDITOR
+        Debug.Log("DEBUG: Press SPACE to serve the ball.");
 		#endif
 	}
 	
