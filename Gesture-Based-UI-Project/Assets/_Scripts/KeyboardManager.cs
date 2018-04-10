@@ -90,19 +90,16 @@ namespace VRKeyboard.Utils {
         {           
             PlayerEntity player = new PlayerEntity();
             player.setPlayerName(Input);
-            player.setPlayerScore(0);
-            playerList.Add(player);
-            Input = "";
-            counter++;
+            playerList.Add(player);           
 
-            //attempt at getting player names and scores to carry through to next scene.
-            PlayerPrefs.SetString("Player" + counter + "Name", Input);
-            PlayerPrefs.SetInt("Player" + counter + "Score", 0);
-            
+            //Getting player names and scores to carry through to next scene.
+            PlayerPrefs.SetString(("Player" + counter + "Name"), Input);
+            //update counter
+            counter++;
+            //reset input
+            Input = "";
             if (playerList.Count == 2)
             {
-                Debug.Log(PlayerPrefs.GetString("Player0Name").ToString());
-                Debug.Log(PlayerPrefs.GetString("Player1Name").ToString());
                 counter = 0;
                 SceneManager.LoadScene("DemoScene");
             }
