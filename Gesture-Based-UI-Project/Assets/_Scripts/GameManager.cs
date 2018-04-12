@@ -9,7 +9,9 @@ using Assets._Scripts;
  * This class is responsible for managing a game. For example, serving the ball at the start.
  */
 public class GameManager : MonoBehaviour {
-    
+
+    private Text winText;
+    private GameObject winBtn;
     [SerializeField]
 	private BallController ball;
 	private Vector3 ballInitialPosition;
@@ -28,6 +30,11 @@ public class GameManager : MonoBehaviour {
 		ballInitialPosition = ball.transform.position;
 		ball.GetComponent<Rigidbody>().useGravity = false;
 		ball.enabled = false;
+
+        winText = GameObject.Find("WinText").GetComponent<Text>();
+        winBtn = GameObject.Find("WinButton");
+        winBtn.SetActive(false);
+        winText.enabled = false;
 
         players = new List<PlayerEntity>();
         PlayerEntity p1 = new PlayerEntity();
@@ -97,16 +104,27 @@ public class GameManager : MonoBehaviour {
 		isStarted = false;
 		ball.GetComponent<Rigidbody>().useGravity = false;
 		ball.StopBall();
+        
 
-		if (!isSinglePlayer && ball.transform.position.z > 0) {
+        if (!isSinglePlayer && ball.transform.position.z > 0) {
 			servingPlayer = PlayerEnum.PLAYER_TWO;
             //Update player 2 score
             int score = players[1].getPlayerScore();
             players[1].setPlayerScore(score + 1);
+            
             //Update player 2 score text
             Text p2Text = GameObject.Find("Player2Text").GetComponent<Text>();
             p2Text.text = players[1].getPlayerName();
             p2Text.text += ": " + players[1].getPlayerScore();
+            //Check for Win condition
+            if (players[1].getPlayerScore() == 15)
+            {
+                //Set the win button to active
+                winBtn.SetActive(true);
+                //Set the win text
+                winText.enabled = true;
+                winText.text = players[1].getPlayerName() + " Wins!";
+            }
             ball.SetDirection(1);
 			ball.transform.position = new Vector3(ballInitialPosition.x, ballInitialPosition.y, ballInitialPosition.z * -1);
 		} else {
@@ -115,11 +133,22 @@ public class GameManager : MonoBehaviour {
             //Update player 1 score
             int score = players[0].getPlayerScore();
             players[0].setPlayerScore(score + 1);
-
+            
             //Update player 1 score text
             Text p1Text = GameObject.Find("Player1Text").GetComponent<Text>();
             p1Text.text = players[0].getPlayerName();
             p1Text.text += ": " + players[0].getPlayerScore();
+
+            //Check for Win condition
+            if (players[0].getPlayerScore() == 15)
+            {
+                //Set the win button to active
+                winBtn.SetActive(true);
+                //Set the win text
+                winText.enabled = true;
+                winText.text = players[0].getPlayerName() + " Wins!";
+            }
+
             ball.transform.position = ballInitialPosition;
 		}
 

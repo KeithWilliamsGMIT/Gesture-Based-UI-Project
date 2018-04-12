@@ -105,18 +105,23 @@ namespace VRKeyboard.Utils {
             counter++;
             
             //reset input
-            Input = "";
-            if (playerList.Count == 2)
-            {               
-                SceneManager.LoadScene("DemoScene");
-                
-            }
+            Input = "";          
 
             //Update input line
-            Text nameTxt = GameObject.Find("NameText").GetComponent<Text>();
-            nameTxt.text = "Enter name " + (counter + 1) + ":";
+            if(counter < 2)
+            {
+                Text nameTxt = GameObject.Find("NameText").GetComponent<Text>();
+                nameTxt.text = "Enter name " + (counter + 1) + ":";
+            }
+            
 
-            counter = 0;
+            if (playerList.Count == 2)
+            {
+                SceneManager.LoadScene("DemoScene");
+                counter = 0;
+            }
+
+
         }
         #endregion
 
