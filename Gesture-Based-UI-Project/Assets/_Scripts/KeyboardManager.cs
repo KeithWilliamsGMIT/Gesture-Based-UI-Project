@@ -14,6 +14,9 @@ using Assets._Scripts;
 
 namespace VRKeyboard.Utils {
     public class KeyboardManager : MonoBehaviour {
+        //Variable to count player names entered (2 max)
+        private int counter = 0;
+
         #region Public Variables
         [Header("User defined")]
         [Tooltip("If the character is uppercase at the initialization")]
@@ -42,7 +45,11 @@ namespace VRKeyboard.Utils {
 
         #region Monobehaviour Callbacks
         private void Awake() {
-            
+
+            Text nameTxt = GameObject.Find("NameText").GetComponent<Text>();
+            nameTxt.text = "Enter name "+(counter+1)+":";
+
+
             for (int i = 0; i < characters.childCount; i++) {
                 GameObject key = characters.GetChild(i).gameObject;
                 Text _text = key.GetComponentInChildren<Text>();
@@ -84,7 +91,7 @@ namespace VRKeyboard.Utils {
             capslockFlag = !capslockFlag;
         }
 
-        int counter = 0;
+        
         //Submitting the inputed player name
         public void Submit()
         {           
@@ -96,13 +103,20 @@ namespace VRKeyboard.Utils {
             PlayerPrefs.SetString(("Player" + counter + "Name"), Input);
             //update counter
             counter++;
+            
             //reset input
             Input = "";
             if (playerList.Count == 2)
-            {
-                counter = 0;
+            {               
                 SceneManager.LoadScene("DemoScene");
+                
             }
+
+            //Update input line
+            Text nameTxt = GameObject.Find("NameText").GetComponent<Text>();
+            nameTxt.text = "Enter name " + (counter + 1) + ":";
+
+            counter = 0;
         }
         #endregion
 
