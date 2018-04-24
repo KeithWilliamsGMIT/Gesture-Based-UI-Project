@@ -10,3 +10,8 @@ git clone https://github.com/KeithWilliamsGMIT/Gesture-Based-UI-Project.git
 ```
 
 Install Unity 5 and open the main menu scene file from the `Gesture-Based-UI-Project/Assets/_Scenes` folder. Unity can be downloaded [here](https://unity3d.com/get-unity/download/archive). Connect the Kinect and ensure it is working. This can be done using Kinect Studio. Press the play button in Unity to start the application.
+
+
+### Youtube demonstration video link
+
+Short demonstration of working project (Training game mode) can be found [here](https://www.youtube.com/watch?v=jCap-1jcJjg)
